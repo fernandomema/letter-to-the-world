@@ -1,14 +1,15 @@
 <script lang="ts">
-    import { page } from '$app/stores';
-    import { Prisma } from '@prisma/client'
-
-    let posts: Prisma.PostSelect[] = $page.data.posts;
+    import { onMount } from 'svelte';
+    import { BlockNoteEditor } from "@blocknote/core";
+    
+    onMount(() => {
+        const editor = BlockNoteEditor.create();
+        editor.mount(document.getElementById("root"));
+    }); 
 </script>
 
-{JSON.stringify(posts)}
-
-<div>
-    {#each posts as post}
-        {post.title}
-    {/each}
+<div class="p-4">
+    <div class="p-4 bg-secondary-200 rounded-md container mx-auto" id="root">
+        asd
+    </div>
 </div>

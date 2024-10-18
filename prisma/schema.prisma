@@ -13,22 +13,42 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
-  title     String
-  content   String?
-  banner    String?
+model Letter {
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  endDate   DateTime?
-  published Boolean  @default(true)
-  author    User?    @relation(fields: [authorId], references: [id])
-  authorId  Int?
+  content   String
+  responses LetterResponse[]
+  signatures LetterSignature[]
+  reports   LetterReport[]
+  ip        String
+  views     Int      @default(0)
+  public    Boolean  @default(false)
 }
 
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  posts Post[]
+model LetterResponse {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  content   String
+  letter    Letter    @relation(fields: [letterId], references: [id])
+  letterId  String
+  public    Boolean @default(false)
+  ip        String
+}
+
+model LetterSignature {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  content   String
+  letter    Letter    @relation(fields: [letterId], references: [id])
+  letterId  String
+  ip        String
+}
+
+model LetterReport {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  reason    String
+  letter    Letter    @relation(fields: [letterId], references: [id])
+  letterId  String
+  ip        String
 }
